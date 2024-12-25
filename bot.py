@@ -12,7 +12,11 @@ dp = Dispatcher()
 # Обработчик команд
 async def send_welcome(message: types.Message):
     await message.answer(
-        f"Привет {message.from_user.username}! Отправь мне номер емкости и через пробел уровень и я скажу объем")
+        f"👋 Привет, {message.from_user.username}!\n\n"
+        "📋 Отправь мне:\n"
+        "🔹 Номер ёмкости через пробел уровень или наоборот\n\n"
+        "🎯 Я подскажу тебе объём или уровень. 🚀"
+    )
 
 
 async def send_help(message: types.Message):
@@ -30,7 +34,9 @@ async def button(message: types.Message):
             if "e" in normalized_text:
                 print(split_text[0].lower())
                 volume = data_k[split_text[0].lower().replace("е", "e")][split_text[1]]
-                await message.answer(f"Ваш объем в {split_text[0]} равен {volume}")
+                await message.answer(
+                    f"🛢️ Объём в ёмкости {split_text[0]} равен: {volume} 📊"
+                )
             else:
 
                 data = data_k[split_text[1].lower().replace("е", "e")]
@@ -39,13 +45,23 @@ async def button(message: types.Message):
                 # Поиск ближайшего ключа
                 closest_key = min(data, key=lambda k: abs(data[k] - target_value))
 
-                await message.answer(f"Ваш ближайший уровень {closest_key}см для {target_value}дал")
+                await message.answer(
+                    f"📏 Ваш ближайший уровень: {closest_key} см\n"
+                    f"🔍 Для значения: {target_value} дал"
+                )
 
         except:
-            await message.answer(f"Такого уровня или емкости нет")
+            await message.answer(
+                "❌ Упс! Такого уровня или ёмкости нет.\n"
+                "📋 Пожалуйста, проверьте данные и попробуйте снова. 😊"
+            )
+
 
     else:
-        await message.answer("текст не соотвествует")
+        await message.answer(
+            "⚠️ Текст не соответствует ожидаемому формату.\n"
+            "📋 Пожалуйста, проверьте данные и отправьте сообщение в правильной форме. 😊"
+        )
 
 
 async def main():
