@@ -25,8 +25,22 @@ async def button(message: types.Message):
         with open("data.json", "r") as data:
             data_k = json.loads(data.read())
         try:
-            volume = data_k[split_text[0]][split_text[1]]
-            await message.answer(f"Ваш объем в {split_text[0]} равен {volume}")
+            normalized_text = split_text[0][0].lower().replace("е", "e")
+            print(normalized_text)
+            if "e" in normalized_text:
+                print(split_text[0].lower())
+                volume = data_k[split_text[0].lower().replace("е", "e")][split_text[1]]
+                await message.answer(f"Ваш объем в {split_text[0]} равен {volume}")
+            else:
+
+                data = data_k[split_text[1].lower().replace("е", "e")]
+                target_value = int(split_text[0]) # Целевое значение
+
+                # Поиск ближайшего ключа
+                closest_key = min(data, key=lambda k: abs(data[k] - target_value))
+
+                await message.answer(f"Ваш ближайший уровень {closest_key}см для {target_value}дал")
+
         except:
             await message.answer(f"Такого уровня или емкости нет")
 
